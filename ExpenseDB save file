@@ -1,0 +1,2 @@
+SELECT * FROM tracker_trackhistory;
+SELECT * FROM tracker_currentbalance;

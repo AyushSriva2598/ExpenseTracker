@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #e8eaf0;
+  --card:    #f0f2f8;
+  --white:   #ffffff;
+  --divider: #dde0e8;
+  --text:    #1c1f2e;
+  --sub:     #9196a8;
+  --navy:    #1e2a5e;
+  --green:   #2e9e6b;
+  --red:     #d94f4f;
+}
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  display: flex; justify-content: center;
+  padding: 0 0 60px;
+}
+.wrap { width: 100%; max-width: 420px; }
+
+/* ── top banner ── */
+.banner {
+  background: var(--navy);
+  padding: 40px 28px 48px;
+  text-align: center;
+  position: relative;
+}
+.banner-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.5); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.banner-amount {
+  font-size: 40px; font-weight: 600;
+  color: #fff; letter-spacing: -0.02em; line-height: 1;
+}
+
+/* ── income / expense strip ── */
+.strip {
+  background: var(--white);
+  margin: -20px 20px 0;
+  border-radius: 14px;
+  display: grid; grid-template-columns: 1fr 1px 1fr;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  position: relative; z-index: 1;
+}
+.strip-divider { background: var(--divider); }
+.strip-cell {
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+  align-items: center;
+}
+.strip-label {
+  font-size: 10px; letter-spacing: 0.14em;
+  color: var(--sub); text-transform: uppercase; font-weight: 500;
+}
+.strip-val {
+  font-size: 18px; font-weight: 600; letter-spacing: -0.01em;
+}
+.strip-val.income { color: var(--green); }
+.strip-val.expense { color: var(--red); }
+
+/* ── body padding ── */
+.body { padding: 28px 20px 0; }
+
+/* ── form card ── */
+.form-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.form-title {
+  font-size: 13px; font-weight: 600;
+  color: var(--text); margin-bottom: 18px;
+  letter-spacing: 0.01em;
+}
+.field { margin-bottom: 14px; }
+.field:last-of-type { margin-bottom: 0; }
+.field label {
+  display: block; font-size: 11px; font-weight: 500;
+  color: var(--sub); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-bottom: 7px;
+}
+.field .hint {
+  font-size: 10px; color: var(--sub);
+  margin-bottom: 7px; font-weight: 400;
+  letter-spacing: 0;
+}
+.field input {
+  width: 100%; background: var(--bg);
+  border: 1.5px solid transparent;
+  border-radius: 10px; padding: 12px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; color: var(--text);
+  outline: none; transition: border-color 0.15s;
+}
+.field input:focus { border-color: var(--navy); background: var(--white); }
+.field input::placeholder { color: var(--sub); font-size: 13px; }
+
+.add-btn {
+  width: 100%; margin-top: 18px;
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.add-btn:hover { opacity: 0.88; }
+.add-btn:active { opacity: 0.72; }
+
+/* ── history ── */
+.history-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.history-title {
+  font-size: 13px; font-weight: 600; color: var(--text);
+}
+.tabs {
+  display: flex; gap: 2px;
+  background: var(--divider);
+  border-radius: 8px; padding: 3px;
+}
+.tab {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: var(--sub); background: none;
+  border: none; padding: 5px 12px;
+  border-radius: 6px; cursor: pointer;
+  transition: all 0.15s; letter-spacing: 0.02em;
+}
+.tab.active { background: var(--white); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+.tx-list {
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.tx-item {
+  display: flex; align-items: center;
+  padding: 14px 18px; gap: 14px;
+  border-bottom: 1px solid var(--divider);
+}
+.tx-item:last-child { border-bottom: none; }
+.tx-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.tx-info { flex: 1; min-width: 0; }
+.tx-desc {
+  font-size: 13px; font-weight: 500; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tx-date { font-size: 11px; color: var(--sub); margin-top: 2px; }
+.tx-amount {
+  font-size: 14px; font-weight: 600; flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+.tx-amount.income { color: var(--green); }
+.tx-amount.expense { color: var(--red); }
+
+.empty {
+  padding: 36px; text-align: center;
+  font-size: 12px; color: var(--sub); letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-label">Your Balance</div>
+    <div class="banner-amount" id="balanceOut">$0.00</div>
+  </div>
+
+  <!-- Income / Expense strip -->
+  <div class="strip">
+    <div class="strip-cell">
+      <span class="strip-label">Income</span>
+      <span class="strip-val income" id="incomeOut">+$0.00</span>
+    </div>
+    <div class="strip-divider"></div>
+    <div class="strip-cell">
+      <span class="strip-label">Expenses</span>
+      <span class="strip-val expense" id="expenseOut">-$0.00</span>
+    </div>
+  </div>
+
+  <div class="body">
+    
+    <!-- Form -->
+     <form method="POST" id="form">
+        {%csrf_token%}
+    <div class="form-card">
+      <div class="form-title">Add new transaction</div>
+      <div class="field">
+        <label>Description</label>
+        <input type="text" id="descInput" name= "description" placeholder="e.g. Groceries, Salary...">
+      </div>
+      <div class="field">
+        <label>Amount</label>
+        <div class="hint">negative = expense &nbsp;·&nbsp; positive = income</div>
+        <input type="number" name="amount" id="amountInput" placeholder="e.g. -500 or 1000" step="0.01">
+      </div>
+      <button class="add-btn" id="submitBtn">Add transaction</button>
+    </div>
+    </form>
+    <!-- History -->
+    <div class="history-header">
+      <span class="history-title">History</span>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('all',this)">All</button>
+        <button class="tab" onclick="switchTab('income',this)">Income</button>
+        <button class="tab" onclick="switchTab('expense',this)">Expense</button>
+      </div>
+    </div>
+
+    <div class="tx-list" id="txList">
+      <div class="empty">no transactions yet</div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function switchTab(type, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('txList').dataset.filter = type;
+    document.dispatchEvent(new CustomEvent('tabchange', { detail: type }));
+  }
+</script>
+</body>
+</html>
