@@ -180,6 +180,77 @@ html, body {
   padding: 36px; text-align: center;
   font-size: 12px; color: var(--sub); letter-spacing: 0.04em;
 }
+/* amount coloring */
+.tx-amount.income {
+  color: var(--green);
+}
+
+.tx-amount.expense {
+  color: var(--red);
+}
+
+/* optional: subtle visual distinction for rows */
+.tx-item[data-type="income"] {
+  border-left: 3px solid var(--green);
+}
+
+.tx-item[data-type="expense"] {
+  border-left: 3px solid var(--red);
+}
+
+/* optional: icon tint */
+.tx-item[data-type="income"] .tx-icon {
+  color: var(--green);
+}
+
+.tx-item[data-type="expense"] .tx-icon {
+  color: var(--red);
+}
+/* icon container stays same */
+.tx-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 0; /* hide any text inside */
+}
+
+/* INCOME (arrow up) */
+.tx-item[data-type="income"] .tx-icon::before {
+  content: "▲";
+  font-size: 14px;
+  color: var(--green);
+}
+
+/* EXPENSE (arrow down) */
+.tx-item[data-type="expense"] .tx-icon::before {
+  content: "▼";
+  font-size: 14px;
+  color: var(--red);
+}
+
+/* amount coloring */
+.tx-amount.income {
+  color: var(--green);
+}
+
+.tx-amount.expense {
+  color: var(--red);
+}
+
+/* optional row accent */
+.tx-item[data-type="income"] {
+  border-left: 3px solid var(--green);
+}
+
+.tx-item[data-type="expense"] {
+  border-left: 3px solid var(--red);
+}
+}
 </style>
 </head>
 <body>
@@ -188,19 +259,19 @@ html, body {
   <!-- Banner -->
   <div class="banner">
     <div class="banner-label">Your Balance</div>
-    <div class="banner-amount" id="balanceOut">$0.00</div>
+    <div class="banner-amount" id="balanceOut">{{current_balance.current_balance}}</div>
   </div>
 
   <!-- Income / Expense strip -->
   <div class="strip">
     <div class="strip-cell">
       <span class="strip-label">Income</span>
-      <span class="strip-val income" id="incomeOut">+$0.00</span>
+      <span class="strip-val income" id="incomeOut">${{income}}</span>
     </div>
     <div class="strip-divider"></div>
     <div class="strip-cell">
       <span class="strip-label">Expenses</span>
-      <span class="strip-val expense" id="expenseOut">-$0.00</span>
+      <span class="strip-val expense" id="expenseOut">${{expense}}</span>
     </div>
   </div>
 
@@ -233,9 +304,24 @@ html, body {
       </div>
     </div>
 
-    <div class="tx-list" id="txList">
-      <div class="empty">no transactions yet</div>
+    <div class="tx-list" id="txList" data-filter="all">
+
+  <!-- TRANSACTION ROW TEMPLATE -->
+  <!-- Duplicate this block dynamically from backend -->
+   {%for transaction in transactions %}
+  <div class="tx-item" data-type="{%if transaction.expense_type == "CREDIT" %}income{%else%}expense{%endif%}">
+    
+    <div class="tx-icon">⬆</div>
+
+    <div class="tx-info">
+      <div class="tx-desc">{{transaction.description}}</div>
+      <div class="tx-date">{{transaction.created_at}}</div>
     </div>
+
+    <div class="tx-amount {%if transaction.expense_type == 'CREDIT' %}income{%else%}expense{%endif%}">{{transaction.amount}}</div>
+</div>
+{% endfor %}
+</div>
 
   </div>
 </div>

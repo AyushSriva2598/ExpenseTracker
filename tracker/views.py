@@ -23,10 +23,17 @@ def index(request):
         current_balance.current_balance+= float(tracking_History.amount)
         current_balance.save()
 
-        print(description,amount)
         return redirect('/')
+        
 
-
-
-
-    return render(request,'index.html')
+    current_balance, _ =currentBalance.objects.get_or_create(id=1)
+    income=0
+    expense=0
+    for tracking_history in trackHistory.objects.all():
+        if tracking_history.expense_type=="CREDIT":
+            income+=tracking_history.amount
+        else:
+            expense+=tracking_history.amount
+    context={'income':income,
+             'expense':expense,'transactions':trackHistory.objects.all(),'current_balance':current_balance}
+    return render(request,'index.html',context)
